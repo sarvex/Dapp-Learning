@@ -43,7 +43,7 @@ def main():
     assert transaction_data['data'] == encoded_function_bytecode
 
     xx = w3.eth.call(transaction_data)
-    print('Result of w3.eth.call :' + bytes.decode(xx))
+    print(f'Result of w3.eth.call :{bytes.decode(xx)}')
     # 这里两个方法返回的结果不一致，原因未知
 
     # 4. 查看ganachi上10个默认账户的Token数量，注意这里的Token与ETH的数量不是一个东西，使用的API也是不一样的，如下：
@@ -51,7 +51,10 @@ def main():
     # if decimal() of the Token is 18, could use fromWei function
     print("\nBefore call function transferfrom")
     for acc in w3.eth.accounts:
-        print("Tokens of Acccount " + acc + " :", w3.fromWei(contract.functions.balanceOf(acc).call(), 'ether'))
+        print(
+            f"Tokens of Acccount {acc} :",
+            w3.fromWei(contract.functions.balanceOf(acc).call(), 'ether'),
+        )
 
 
     # 5. 使用ERC20的相关函数
@@ -70,7 +73,10 @@ def main():
 
     print("After transfer")
     for acc in w3.eth.accounts:
-        print("Tokens of Acccount " + acc + " :",w3.fromWei(contract.functions.balanceOf(acc).call(), 'ether'))
+        print(
+            f"Tokens of Acccount {acc} :",
+            w3.fromWei(contract.functions.balanceOf(acc).call(), 'ether'),
+        )
 
     # 5.2 _mint(): 使用铸币函数，合约创建者在创建合约的时候可以设置其能获得的初始Token数量，
     # 其他账户获得代币需要使用_mint()函数

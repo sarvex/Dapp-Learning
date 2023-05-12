@@ -137,7 +137,7 @@ class FiniteField:
         if val.iszero():
             return val
         sw = self.p % 8
-        if sw == 3 or sw == 7:
+        if sw in [3, 7]:
             res = val ** ((self.p + 1) / 4)
         elif sw == 5:
             x = val ** ((self.p + 1) / 4)
@@ -147,10 +147,7 @@ class FiniteField:
                 res = (4 * val) ** ((self.p - 5) / 8) * 2 * val
         else:
             raise Exception("modsqrt non supported for (p%8)==1")
-        if res.value % 2 == flag:
-            return res
-        else:
-            return -res
+        return res if res.value % 2 == flag else -res
 
     def inverse(self, value):
         """
@@ -226,7 +223,7 @@ class EllipticCurve:
             return not (self == rhs)
 
         def __str__(self):
-            return "(%s,%s)" % (self.x, self.y)
+            return f"({self.x},{self.y})"
 
         def __neg__(self):
             return self.curve.neg(self)
@@ -252,12 +249,10 @@ class EllipticCurve:
             return p
 
         # calculate the slope of the intersection line
-        if p == q:
-            if p.y == 0:
-                return self.zero()
-            l = (3 * p.x ** 2 + self.a) / (2 * p.y)
-        elif p.x == q.x:
+        if p == q and p.y == 0 or p != q and p.x == q.x:
             return self.zero()
+        elif p == q:
+            l = (3 * p.x ** 2 + self.a) / (2 * p.y)
         else:
             l = (p.y - q.y) / (p.x - q.x)
 
@@ -276,8 +271,7 @@ class EllipticCurve:
         accumulator = self.zero()
         shifter = pt
         while scalar != 0:
-            bit = scalar % 2
-            if bit:
+            if bit := scalar % 2:
                 accumulator += shifter
             shifter += shifter
             scalar //= 2
@@ -414,8 +408,8 @@ class ECDSA:
         x2 = self.crack1(r, s2, m2, secret)
 
         if x1 != x2:
-            print("x1=%s" % x1)
-            print("x2=%s" % x2)
+            print(f"x1={x1}")
+            print(f"x2={x2}")
 
         return (secret, x1)
 
@@ -451,11 +445,10 @@ def verifytest(calced, expected, descr):
     """
     verifytest is used to verify test results
     """
-    if type(calced) != type(expected):
-        if type(expected) == str:
-            calced = "%s" % calced
+    if type(calced) != type(expected) and type(expected) == str:
+        calced = f"{calced}"
     if calced != expected:
-        print("ERROR in %s: got %s, expected %s" % (descr, calced, expected))
+        print(f"ERROR in {descr}: got {calced}, expected {expected}")
     else:
         return True
 

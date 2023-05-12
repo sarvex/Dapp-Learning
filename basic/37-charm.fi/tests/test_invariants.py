@@ -413,8 +413,8 @@ def test_cannot_make_instant_profit_around_rebalance(
     amount0Withdraw, amount1Withdraw = tx.return_value
     total0After, total1After = vault.getTotalAmounts()
 
-    assert not (amount0Deposit < amount0Withdraw and amount1Deposit <= amount1Withdraw)
-    assert not (amount0Deposit <= amount0Withdraw and amount1Deposit < amount1Withdraw)
+    assert amount0Deposit >= amount0Withdraw or amount1Deposit > amount1Withdraw
+    assert amount0Deposit > amount0Withdraw or amount1Deposit >= amount1Withdraw
 
     assert total0 <= total0After + 2
     assert total1 <= total1After + 2

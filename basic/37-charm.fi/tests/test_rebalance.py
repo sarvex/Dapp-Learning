@@ -61,11 +61,9 @@ def test_strategy_rebalance(
     if big:
         # If order is too big, all tokens go to limit order
         assert base[0] == 0
-        assert limit[0] > 0
     else:
         assert base[0] > 0
-        assert limit[0] > 0
-
+    assert limit[0] > 0
     # Check no tokens left unused. Only small amount left due to rounding
     assert tokens[0].balanceOf(vault) - vault.accruedProtocolFees0() < 1000
     assert tokens[1].balanceOf(vault) - vault.accruedProtocolFees1() < 1000

@@ -65,7 +65,7 @@ class ECC256k1:
     def EccMultiply(self, GenPoint, ScalarHex): # Double & Add. Not true multiplication
         if ScalarHex == 0 or ScalarHex >= N: raise Exception("Invalid Scalar/Private Key")
 
-        ScalarBin = str(bin(ScalarHex))[2:]
+        ScalarBin = bin(ScalarHex)[2:]
 
         Q = GenPoint
         for i in range (1, len(ScalarBin)): # EC乘法转为标量乘法进行计算 减少运算量
@@ -81,10 +81,7 @@ class ECC256k1:
 
     def compressedPubkey(self, pubKey):
         fill = str(hex(pubKey[0])[2:]).zfill(64)
-        if pubKey[1] % 2 == 1: # If the Y value for the Public Key is odd.
-            return ("03" + fill)
-        else: # Or else, if the Y value is even.
-            return ("02" + fill)
+        return f"03{fill}" if pubKey[1] % 2 == 1 else f"02{fill}"
 
     def uncompressedPubkey(self, pubKey):
         return ("04" + "%064x" % pubKey[0] + "%064x" % pubKey[1])

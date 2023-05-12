@@ -10,7 +10,7 @@ def main():
     # 1. 查看ganache上的账号以及设置默认账号等
     print("Accounts Balance before send transaction :")
     for acc in w3.eth.accounts:
-        print("Account " + acc + " : " + str(w3.eth.get_balance(acc)))
+        print(f"Account {acc} : {str(w3.eth.get_balance(acc))}")
     w3.eth.default_account = w3.eth.accounts[0]
 
     # 2. 部署智能合约， 使用web3.eth.contract， 传入abi和bytecode，
@@ -35,7 +35,7 @@ def main():
     # 2.4 还可以查看一下ganache上发出合约的账户是否消耗了eth
     print("\nAccounts balance after send transaction ")
     for acc in w3.eth.accounts:
-        print("Account " + acc + " : " + str(w3.eth.get_balance(acc)))
+        print(f"Account {acc} : {str(w3.eth.get_balance(acc))}")
 
 
 if __name__ =='__main__':

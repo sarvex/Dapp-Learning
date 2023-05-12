@@ -19,7 +19,12 @@ def main():
     print('1. ---- mint role')
     #print(w3.toHex(contract.functions.MINTER_ROLE().call()))
     #print(w3.toHex(w3.keccak(text="MINTER_ROLE")))
-    print("Account " + w3.eth.accounts[5] + ", Mint Role : ", contract.functions.hasRole(contract.functions.MINTER_ROLE().call(), w3.eth.accounts[5]).call())
+    print(
+        f"Account {w3.eth.accounts[5]}, Mint Role : ",
+        contract.functions.hasRole(
+            contract.functions.MINTER_ROLE().call(), w3.eth.accounts[5]
+        ).call(),
+    )
     #print(w3.toHex(contract.functions.getRoleAdmin(contract.functions.MINTER_ROLE().call()).call()))
 
     # 2. 进行铸币，
@@ -28,7 +33,10 @@ def main():
     print("Before Mint")
     minter_role = contract.functions.MINTER_ROLE().call()
     for acc in w3.eth.accounts:
-        print("Account " + acc + " Tokens Balance :" + str(contract.functions.balanceOf(acc).call()), ", Mint Role: " + str(contract.functions.hasRole(minter_role, acc).call()))
+        print(
+            f"Account {acc} Tokens Balance :{str(contract.functions.balanceOf(acc).call())}",
+            f", Mint Role: {str(contract.functions.hasRole(minter_role, acc).call())}",
+        )
 
     # 3. 设置权限，现在默认管理员是合约的创建者accounts[0]
     # accounts[0]能赋予任何一个账户minter的角色，包括它自己
@@ -40,7 +48,10 @@ def main():
     print("\nAfter Mint")
     for acc in w3.eth.accounts:
         contract.functions.mint(to=acc, amount=10).transact({'from': w3.eth.accounts[5]})
-        print("Account " + acc + " Tokens Balance :" + str(contract.functions.balanceOf(acc).call()), ", Mint Role: " + str(contract.functions.hasRole(minter_role, acc).call()))
+        print(
+            f"Account {acc} Tokens Balance :{str(contract.functions.balanceOf(acc).call())}",
+            f", Mint Role: {str(contract.functions.hasRole(minter_role, acc).call())}",
+        )
 
 
 if __name__ =='__main__':
